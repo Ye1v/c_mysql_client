@@ -1,0 +1,2 @@
+# c_mysql_client
+使用c语言写的一个mysql_client
