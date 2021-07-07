@@ -123,4 +123,9 @@ int  updateByName(MYSQL *now_sql)  //改，也可以理解为更新字段，需�
     return 1; //成功返回 1
 }
 
+void quit(MYSQL * now_sql)   // 结束句柄
+{
+    mysql_close(now_sql);
+    return ;
+}
 
