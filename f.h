@@ -2,6 +2,7 @@
 #include<stdlib.h>
 #include <mysql/mysql.h>
 #include <string>
+using namespace std;
 
 string user_name;	//变量声明
 string user_server;
@@ -12,4 +13,5 @@ string databases;
 
 int remake(void);    //函数声明
 void connect(MYSQL *now_sql);
+int mysql_now(MYSQL *now_sql);
 void insertData(MYSQL *now_sql);  //增
