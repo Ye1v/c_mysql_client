@@ -54,12 +54,12 @@ int connect_sql(MYSQL *now_sql))
 	return 1;  //成功返回 1
 }
 
-void insertData(MYSQL *now_sql)  //增
+int insertData(MYSQL *now_sql)  //增
 {
     	if(NULL == now_sql )
        {
        	 printf("发生了一个错误\n");
-         return ;    
+         return 0;    //失败返回 0
        }
     	string SQL; 
     	string word;
@@ -70,15 +70,17 @@ void insertData(MYSQL *now_sql)  //增
    	 if(mysql_query(now_sql, SQL) !=0)
    	{
     	    printf("发生了一个错误:%s\n", mysql_error(now_sql));
+		return 0; //失败返回 0
    	}
+	   return 1;   //成功返回 1
 }
 
-void deleteName(MYSQL *now_sql) //删
+int  deleteName(MYSQL *now_sql) //删
 {
-    	if(NULL == mysql )
+    	if(NULL == now_sql )
        {
        	  printf("发生了一个错误: \n");
-          return ;    
+          return 0;    //失败返回 0
        }
     	string word;
     	cin >>word;
@@ -87,11 +89,38 @@ void deleteName(MYSQL *now_sql) //删
     	printf("%s\n", SQL);
 
     //执行SQL语句
-    	if(mysql_query(connection, SQL) !=0)
+    	if(mysql_query(now_sql, SQL) !=0)
        {
-        printf("发生了一个错误:%s\n", mysql_error(mysql));
-        return ;
-       }
-
+        printf("发生了一个错误:%s\n", mysql_error(now_sql));
+        return 0; //失败返回 0
+       }	
+	return 1; //成功返回 1
 }
+
+
+int  updateByName(MYSQL *now_sql)  //改，也可以理解为更新字段，需要指定 
+{	
+    if(NULL == now_sql )
+    {
+     	 printf("发生了一个错误\n");
+         return 0;    //失败返回 0
+    }
+    string SQL;
+    string word1;
+    string word2;
+    cin >>word1;
+    cin >>word2;
+
+   /* sprintf(SQL, "UPDATE table1 SET  sex = '%s' WHERE name = '%s'", word1,word2); 根据需求改 */
+    printf("%s\n", SQL);
+
+    //执行SQL语句
+    if(mysql_query(now_sql, SQL) !=0)
+    {
+      	printf("发生了一个错误:%s\n", mysql_error(now_sql));
+        return 0; //失败返回 0
+    }
+    return 1; //成功返回 1
+}
+
 

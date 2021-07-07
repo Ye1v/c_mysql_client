@@ -3,7 +3,8 @@
 		"C": "1",
 		"*.html": "html",
 		"iostream": "cpp",
-		"ostream": "cpp"
+		"ostream": "cpp",
+		"stdlib.h": "c"
 	},
 	"C_Cpp.errorSquiggles": "Disabled"
 }

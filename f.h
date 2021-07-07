@@ -14,5 +14,6 @@ string databases;
 int remake(void);    //函数声明
 void connect(MYSQL *now_sql);
 int mysql_now(MYSQL *now_sql);
-void insertData(MYSQL *now_sql);  //增
-void deleteName(MYSQL *now_sql); //删
+int insertData(MYSQL *now_sql);  //增
+int  deleteName(MYSQL *now_sql); //删
+int  updateByName(MYSQL *now_sql);  //改，也可以理解为更新字段，需要指定 
