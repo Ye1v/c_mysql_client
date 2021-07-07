@@ -13,12 +13,13 @@ class usr_in
 	   string usr_name;
 	   string usr_server;
 	   string usr_passwd;
-     string  usr_port;
+	   string usr_db;
+     	int  usr_port;
      string databases;
 	   void name(void);
 	   void server(void);
 	   void passwd(void);
+	   void db(void);
      void port(void);
 };
-int connect(MYSQL *now_sql);
-
+void connect(MYSQL *now_sql);
