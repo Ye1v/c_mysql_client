@@ -11,7 +11,7 @@ int remake(void) 	//初始化
   	return EXIT_SUCCESS;
 }
 
-int mysql_now(MYSQL *now_sql)   //启动
+int mysql_now(MYSQL *now_sql)   //启动 
 {
 	bool boot;
 	char c;
@@ -22,7 +22,7 @@ int mysql_now(MYSQL *now_sql)   //启动
 	else 
 		{
 			cout<<"初始化失败"<<endl;
-			return 0;
+			return 0;  //失败返回 0
 		}
 	cout <<"请输入连接的用户名、服务器、数据库名、密码:"<<endl;
 	cin >> user_name;
@@ -40,7 +40,7 @@ int mysql_now(MYSQL *now_sql)   //启动
 		user_port="3306";
 	}
 	cout <<"正在连接到mysql服务器"<<endl;	
-	return 0;
+	return 1;  //执行结束返回 1  
 }
 
 int connect_sql(MYSQL *now_sql))
@@ -48,28 +48,50 @@ int connect_sql(MYSQL *now_sql))
 	if(NULL == mysql_real_connect(now_sql,user_server,user_name,user_passwd,user_db,user_port,NULL,0))
 		{
 			cout <<"连接到mysql服务器失败,错误代码为："<<mysql_error(&now_sql)<<endl;
+			return 0; //失败返回 0
 		}
 	cout <<"已成功连接到mysql服务器！"<<endl;
+	return 1;  //成功返回 1
 }
 
 void insertData(MYSQL *now_sql)  //增
 {
-    if(NULL == now_sql )
-    {
-        printf("发生了一个错误\n");
-        return ;    
-    }
-    string SQL; 
-    string word;
-    cin >>word;   
-    sprintf(SQL, "INSERT INTO table1 %s VALUES ", word);
-    printf("%s\n", SQL);
-    //执行SQL语句
-    if(mysql_query(now_sql, SQL) !=0)
-    {
-        printf("发生了一个错误:%s\n", mysql_error(now_sql));
-    }
+    	if(NULL == now_sql )
+       {
+       	 printf("发生了一个错误\n");
+         return ;    
+       }
+    	string SQL; 
+    	string word;
+    	cin >>word;   
+    	sprintf(SQL, "INSERT INTO table1 %s VALUES ", word);
+    	printf("%s\n", SQL);
+   	 //执行SQL语句
+   	 if(mysql_query(now_sql, SQL) !=0)
+   	{
+    	    printf("发生了一个错误:%s\n", mysql_error(now_sql));
+   	}
 }
 
-void 
+void deleteName(MYSQL *now_sql) //删
+{
+    	if(NULL == mysql )
+       {
+       	  printf("发生了一个错误: \n");
+          return ;    
+       }
+    	string word;
+    	cin >>word;
+    	string SQL;
+    	sprintf(SQL, "delete from table1 WHERE name = '%s'", word);
+    	printf("%s\n", SQL);
+
+    //执行SQL语句
+    	if(mysql_query(connection, SQL) !=0)
+       {
+        printf("发生了一个错误:%s\n", mysql_error(mysql));
+        return ;
+       }
+
+}
 
