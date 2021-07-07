@@ -15,3 +15,4 @@ int remake(void);    //函数声明
 void connect(MYSQL *now_sql);
 int mysql_now(MYSQL *now_sql);
 void insertData(MYSQL *now_sql);  //增
+void deleteName(MYSQL *now_sql); //删
