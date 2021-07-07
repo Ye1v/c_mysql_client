@@ -2,24 +2,14 @@
 #include<stdlib.h>
 #include <mysql/mysql.h>
 #include <string>
-class use_mysql
-{
-	public:
-	    int remake(void);
-};
-class usr_in
-{
-	public: 
-	   string usr_name;
-	   string usr_server;
-	   string usr_passwd;
-	   string usr_db;
-     	int  usr_port;
-     string databases;
-	   void name(void);
-	   void server(void);
-	   void passwd(void);
-	   void db(void);
-     void port(void);
-};
+
+string user_name;	//变量声明
+string user_server;
+string user_passwd;
+string user_db;
+int  usr_port;
+string databases;
+
+int remake(void);    //函数声明
 void connect(MYSQL *now_sql);
+void insertData(MYSQL *now_sql);  //增
