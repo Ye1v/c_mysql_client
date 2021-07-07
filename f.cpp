@@ -71,3 +71,5 @@ void insertData(MYSQL *now_sql)  //增
     }
 }
 
+void 
+
