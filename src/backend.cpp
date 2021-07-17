@@ -1,5 +1,4 @@
-#include "f.h"
-using namespace std;
+#include "func.h"
 
 int remake(void) 	//初始化
 {
@@ -30,7 +29,7 @@ int mysql_now(MYSQL *now_sql)   //启动
             }
             else if (c == 'n' || c == 'N')
             {
-                user_port="3306";
+                user_port=3306;
                 break;
             }
         }
@@ -121,11 +120,5 @@ int  updateByName(MYSQL *now_sql)  //改，也可以理解为更新字段，需�
         return 0; //失败返回 0
     }
     return 1; //成功返回 1
-}
-
-void quit(MYSQL * now_sql)   // 结束句柄
-{
-    mysql_close(now_sql);
-    return ;
 }
 
