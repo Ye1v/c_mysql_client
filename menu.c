@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <mysql/mysql.h>
 
 #include "menu.h"
 
@@ -22,9 +23,48 @@ Display_Menu(char *db, char *user)
 }
 
 void
-Get_Command_Menu(char *db)
+Help_Menu()
+{
+    printf("\nA C homework for mysql client\n");
+    printf("List of client comands:\n");
+    printf("create      Create tables\n");
+    printf("insert      Insert columns\n");
+    printf("select      Select columns from a table\n");
+    printf("update      Update columns in a table\n");
+    printf("delate      Delate columns in a table\n");
+    printf("help        Print this help\n");
+    printf("quit        Quit client\n\n");
+}
+
+int
+Get_Command_Menu(MYSQL *mysql)
 {
     char command[100];
-    printf("(%s)> ", db);
+    
+    printf("(%s)> ", mysql->db);
     scanf("%s", command);
+    
+    if (!strcmp(command, "create")) {
+
+    }
+    else if(!strcmp(command, "insert")) {
+
+    }
+    else if(!strcmp(command, "select")) {
+        
+    }
+    else if(!strcmp(command, "update")) {
+        
+    }
+    else if(!strcmp(command, "delate")) {
+        
+    }
+    else if(!strcmp(command, "help")) {
+        Help_Menu();
+    }
+    else if(!strcmp(command, "quit")) {
+        printf("Bye!\n");
+        return 1;
+    }
+    else printf("Unknown command: %s\n", command);
 }

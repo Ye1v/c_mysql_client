@@ -7,35 +7,9 @@
 #include "menu.h"
 
 /* function declarations */
-static int InsertData(MYSQL *mysql);
 static void Login(MYSQL *mysql);
 
 /* function implementations */
-int
-InsertData(MYSQL *mysql) 
-{
-    char SQL[20], word[20];
-
-    /* error */
-    if(mysql == NULL)
-    {
-        printf("Error: can not access to your mysql server\n");
-        return 1;    
-    }
-    
-
-    sscanf(SQL, "INSERT INTO table1 %s VALUES ", word);
-    printf("%s\n", SQL);
-
-    /* run sql command */
-    if(mysql_query(mysql, SQL) != 0)
-    {
-        printf("Error: %s\n", mysql_error(mysql));
-		return 1;
-    }
-    return 0;
-}
-
 void
 Login(MYSQL *mysql)
 {
@@ -62,8 +36,6 @@ Login(MYSQL *mysql)
     }
 }
 
-
-
 /* variables */
 MYSQL Now_Sql;
 
@@ -72,7 +44,11 @@ int main(int argc, char *argv[])
     mysql_init(&Now_Sql);
     Login(&Now_Sql);
     Display_Menu(Now_Sql.db, Now_Sql.user);
-    Get_Command_Menu(Now_Sql.db);
+    while (1)
+    {
+        if (Get_Command_Menu(&Now_Sql) == 1) break;  
+    }
+    
 
     mysql_close(&Now_Sql);
     return 0;
