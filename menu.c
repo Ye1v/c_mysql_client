@@ -44,19 +44,19 @@ Get_Command_Menu(char *db)
     scanf("%s", command);
     
     if (!strcmp(command, "create")) {
-        return create;
+        return Create_Menu;
     }
     else if(!strcmp(command, "insert")) {
-        return insert;
+        return Insert_Menu;
     }
     else if(!strcmp(command, "select")) {
-        return select;
+        return Select_Menu;
     }
     else if(!strcmp(command, "update")) {
-        return update;
+        return Update_Menu;
     }
     else if(!strcmp(command, "delate")) {
-        return delate;
+        return Delate_Menu;
     }
     else if(!strcmp(command, "help")) {
         Help_Menu();

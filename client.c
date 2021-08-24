@@ -38,19 +38,19 @@ Get_Command()
         int command;
         if (command = (Get_Command_Menu(Now_Sql.db)) == 1) break;  
         else switch (command) {
-            case create:
+            case Create_Menu:
                 Create();
                 break;
-            case insert:
+            case Insert_Menu:
                 Insert();
                 break;
-            case select:
+            case Select_Menu:
                 Select();
                 break;
-            case update:
+            case Update_Menu:
                 Update();
                 break;
-            case delate:
+            case Delate_Menu:
                 Delate();
                 break;
 
