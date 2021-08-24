@@ -7,14 +7,70 @@
 #include "menu.h"
 
 /* function declarations */
-static void Login(MYSQL *mysql);
+static void Create();
+static void Delate();
+static void Get_Command();
+static void Insert();
+static void Login();
+static void Select();
+static void Update();
+
+/* variables */
+static MYSQL Now_Sql;
 
 /* function implementations */
 void
-Login(MYSQL *mysql)
+Create()
+{
+
+}
+
+void
+Delate()
+{
+
+}
+
+void
+Get_Command()
+{
+    while (1) {   
+        int command;
+        if (command = (Get_Command_Menu(Now_Sql.db)) == 1) break;  
+        else switch (command) {
+            case create:
+                Create();
+                break;
+            case insert:
+                Insert();
+                break;
+            case select:
+                Select();
+                break;
+            case update:
+                Update();
+                break;
+            case delate:
+                Delate();
+                break;
+
+            default:
+                break;
+        }
+    }
+}
+void
+Insert()
+{
+
+}
+
+void
+Login()
 {
     char host[20], user[50], *passwd, dbname[50];
     unsigned port;
+
     /* input */
     printf("please input your mysql host: ");
     scanf("%s", host);
@@ -25,30 +81,37 @@ Login(MYSQL *mysql)
     passwd = getpass("please input your mysql password: ");
     printf("please input your mysql database's name: ");
     scanf("%s", dbname);
+
     /* connect */
-    if (mysql_real_connect(mysql, host, user, passwd, dbname, port, NULL, 0) == NULL) {
+    if (mysql_real_connect(&Now_Sql, host, user, passwd, dbname, port, NULL, 0) == NULL) {
         printf("mysql connection failed\n");
-        fprintf(stderr, "%s\n", mysql_error(mysql));
+        fprintf(stderr, "%s\n", mysql_error(&Now_Sql));
         exit(1);
     }
     else {
-        fprintf(stderr, "mysql connection successful !\n");
+        fprintf(stderr, "mysql connection successful!\n");
     }
 }
 
-/* variables */
-MYSQL Now_Sql;
+void
+Select()
+{
+
+}
+
+void
+Update()
+{
+
+}
 
 int main(int argc, char *argv[])
 {
     mysql_init(&Now_Sql);
-    Login(&Now_Sql);
+
+    Login();
     Display_Menu(Now_Sql.db, Now_Sql.user);
-    while (1)
-    {
-        if (Get_Command_Menu(&Now_Sql) == 1) break;  
-    }
-    
+    Get_Command();
 
     mysql_close(&Now_Sql);
     return 0;

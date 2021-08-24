@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <string.h>
-#include <mysql/mysql.h>
 
 #include "menu.h"
 
@@ -37,27 +36,27 @@ Help_Menu()
 }
 
 int
-Get_Command_Menu(MYSQL *mysql)
+Get_Command_Menu(char *db)
 {
     char command[100];
     
-    printf("(%s)> ", mysql->db);
+    printf("(%s)> ", db);
     scanf("%s", command);
     
     if (!strcmp(command, "create")) {
-
+        return create;
     }
     else if(!strcmp(command, "insert")) {
-
+        return insert;
     }
     else if(!strcmp(command, "select")) {
-        
+        return select;
     }
     else if(!strcmp(command, "update")) {
-        
+        return update;
     }
     else if(!strcmp(command, "delate")) {
-        
+        return delate;
     }
     else if(!strcmp(command, "help")) {
         Help_Menu();
