@@ -27,12 +27,14 @@ Help_Menu()
     printf("\nA C homework for mysql client\n");
     printf("List of client comands:\n");
     printf("create      Create tables\n");
+    printf("delate      Delate columns in a table\n");
+    printf("drop        Drop tables\n");
+    printf("help        Print this help\n");
     printf("insert      Insert columns\n");
+    printf("quit        Quit client\n");
     printf("select      Select columns from a table\n");
     printf("update      Update columns in a table\n");
-    printf("delate      Delate columns in a table\n");
-    printf("help        Print this help\n");
-    printf("quit        Quit client\n\n");
+    printf("use         Use another database\n\n");
 }
 
 int
@@ -40,30 +42,36 @@ Get_Command_Menu(char *db)
 {
     char command[100];
     
-    printf("(%s)> ", db);
+    printf("[%s]> ", db);
     scanf("%s", command);
     
     if (!strcmp(command, "create")) {
         return Create_Menu;
     }
-    else if(!strcmp(command, "insert")) {
-        return Insert_Menu;
-    }
-    else if(!strcmp(command, "select")) {
-        return Select_Menu;
-    }
-    else if(!strcmp(command, "update")) {
-        return Update_Menu;
-    }
     else if(!strcmp(command, "delate")) {
         return Delate_Menu;
+    }
+    else if(!strcmp(command, "drop")) {
+        return Drop_Menu;
     }
     else if(!strcmp(command, "help")) {
         Help_Menu();
     }
+    else if(!strcmp(command, "insert")) {
+        return Insert_Menu;
+    }
     else if(!strcmp(command, "quit")) {
         printf("Bye!\n");
-        return 1;
+        return Quit_Menu;
+    }
+    else if(!strcmp(command, "select")) {
+        return Select_Menu;
+    }
+    else if(!strcmp(command, "use")) {
+        return Use_Menu;
+    }
+    else if(!strcmp(command, "update")) {
+        return Update_Menu;
     }
     else printf("Unknown command: %s\n", command);
 }
