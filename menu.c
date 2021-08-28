@@ -31,8 +31,9 @@ Help_Menu()
     printf("drop        Drop tables\n");
     printf("help        Print this help\n");
     printf("insert      Insert columns\n");
-    printf("quit        Quit client\n");
+    printf("quit        Quit the client\n");
     printf("select      Select columns from a table\n");
+    printf("show        Show tables in the database\n");
     printf("update      Update columns in a table\n");
     printf("use         Use another database\n\n");
 }
@@ -66,6 +67,9 @@ Get_Command_Menu(char *db)
     }
     else if(!strcmp(command, "select")) {
         return Select_Menu;
+    }
+    else if(!strcmp(command, "show")) {
+        return Show_Menu;
     }
     else if(!strcmp(command, "use")) {
         return Use_Menu;

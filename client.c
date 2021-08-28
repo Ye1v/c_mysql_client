@@ -18,35 +18,38 @@ struct Account {
 
 /* function declarations */
 static void CreateTable();
-static void Delate();
+static int  Delate();
 static void DropTable();
 static void Get_Command();
-static void Insert();
+static int  Insert();
 static void Login();
-static void Select();
-static void Use();
-static void Update();
+static int  Select();
+static int  Show();
+static int  Use();
+static int  Update();
 
 /* variables */
-static MYSQL Now_Sql;
-static MYSQL_STMT Now_Stmt;
-static char *Query;
 static Account Acc;
+static MYSQL_RES *Now_Res;
+static MYSQL_ROW Now_Row;
+static MYSQL Now_Sql;
+static MYSQL_STMT *Now_Stmt;
+static char *Query;
 
 /* function implementations */
-void
+int
 Create()
 {
-    Query = "create table ? (? ?, ? ?);"; 
+    Query = "create table ? (? ?, ? ?)"; 
 }
 
-void
+int
 Delate()
 {
-
+    
 }
 
-void
+int
 Drop()
 {
 
@@ -73,6 +76,9 @@ Get_Command()
             case Select_Menu:
                 Select();
                 break;
+            case Show_Menu:
+                Show();
+                break;
             case Use_Menu:
                 Use();
                 break;
@@ -85,7 +91,8 @@ Get_Command()
         }
     }
 }
-void
+
+int
 Insert()
 {
 
@@ -116,25 +123,58 @@ Login()
     }
 }
 
-void
+int
 Select()
 {
+    char table[20];
+    MYSQL_BIND params[1];
+    Query = "select * from ?";
 
+    printf("input the Table: \n");
+    scanf("%s", &table);
+
+    memset(params, 0, sizeof(params));
+    params[0].buffer_type = MYSQL_TYPE_STRING; 
+    params[0].buffer = table;
+
+    if(mysql_stmt_prepare(Now_Stmt, Query, strlen(Query))) { 
+        fprintf(stderr, "mysql_stmt_prepare: %s\n", mysql_error(&Now_Sql)); 
+        return -1; 
+    }
+
+    mysql_stmt_bind_result(Now_Stmt, params); 
+    mysql_stmt_execute(Now_Stmt);
 }
 
-void
+int
+Show()
+{
+    Query = "show tables";
+
+    if (mysql_query(&Now_Sql, Query)) {
+          fprintf(stderr, "%s\n", mysql_error(&Now_Sql));
+          return -1;
+    }
+    Now_Res = mysql_use_result(&Now_Sql);
+    printf("MySQL Tables in database %s:\n", Now_Sql.db);
+    while ((Now_Row = mysql_fetch_row(Now_Res)) != NULL)
+        printf("%s \n", Now_Row[0]);
+
+    mysql_free_result(Now_Res);
+}
+int
 Use()
 {
     mysql_close(&Now_Sql);
     mysql_init(&Now_Sql);
 
-    printf("please input your mysql database's name: ");
+    printf("please input your mysql database's name: \n");
     scanf("%s", Acc.dbname);
 
     if (mysql_real_connect(&Now_Sql, Acc.host, Acc.user, Acc.passwd, Acc.dbname, Acc.port, NULL, 0) == NULL) {
         printf("mysql connection failed\n");
         fprintf(stderr, "%s\n", mysql_error(&Now_Sql));
-        exit(1);
+        return -1;
     }
     else {
         fprintf(stderr, "mysql connection successful!\n");
@@ -142,7 +182,7 @@ Use()
     }
 }
 
-void
+int
 Update()
 {
 
@@ -151,11 +191,12 @@ Update()
 int main(int argc, char *argv[])
 {
     mysql_init(&Now_Sql);
+    Now_Stmt = mysql_stmt_init(&Now_Sql);
 
     Login();
     Display_Menu(Now_Sql.db, Now_Sql.user);
     Get_Command();
 
+    mysql_stmt_close(Now_Stmt);
     mysql_close(&Now_Sql);
-    return 0;
 }
