@@ -32,6 +32,7 @@ static int  Update();
 
 /* variables */
 static Account Acc;
+static MYSQL_FIELD *Now_Field;
 static MYSQL_RES *Now_Res;
 static MYSQL_ROW Now_Row;
 static MYSQL Now_Sql;
@@ -72,7 +73,21 @@ CreateTable()
 int
 Delate()
 {
-    
+    char table_name[50];
+    char where_clause[50];
+
+    strcpy(Query, "delate from ");
+
+    scanf("%s", table_name);
+    strcat(Query, table_name);
+
+    strcat(Query, " where ");
+
+    scanf("%s", where_clause);
+    strcat(Query, where_clause);
+
+    if (Execute() == -1)
+        return -1;
 }
 
 int
@@ -140,7 +155,39 @@ Get_Command()
 int
 Insert()
 {
+    char table_name[50];
+    char colume_name[50];
+    char colume_value[50];
+    int colume_num, i;
 
+    strcpy(Query, "insert into ");
+
+    scanf("%s", table_name);
+    strcat(Query, table_name);
+
+    strcat(Query, " (");
+    scanf("%d", &colume_num);
+    i = colume_num;
+    while (i--) {
+        scanf("%s", colume_name);
+        strcat(Query, colume_name);
+        if (i != 0)
+            strcat(Query, ", ");
+    }
+    strcat(Query, ") ");
+    strcat(Query, "values ");
+    strcat(Query, " (");
+    i = colume_num;
+    while (i--) {
+        scanf("%s", colume_value);
+        strcat(Query, colume_value);
+        if (i != 0)
+            strcat(Query, ", ");
+    }
+    strcat(Query, ") ");
+
+    if (Execute() == -1)
+        return -1;
 }
 
 void
@@ -172,11 +219,16 @@ void
 Print()
 {
     Now_Res = mysql_use_result(&Now_Sql);
+    Now_Field = mysql_fetch_fields(Now_Res);
 
+    /* colume name */
+    for (int i = 0; i < mysql_num_fields(Now_Res); i++)
+        printf("\t%s\t|", Now_Field[i].name);
+    printf("\n");
     while ((Now_Row = mysql_fetch_row(Now_Res)) != NULL) {
-        for (int i = 0; i < mysql_num_fields(Now_Res); i++) {
-            printf("%s\t", Now_Row[i]);
-        }
+        /* colume value */
+        for (int i = 0; i < mysql_num_fields(Now_Res); i++)
+            printf("\t%s\t|", Now_Row[i]);
         printf("\n");
     }
 
@@ -189,11 +241,13 @@ Select()
     char table_name[10];
 
     strcpy(Query, "select * from ");
+
     scanf("%s", table_name);
     strcat(Query,table_name);
-    
+
     if (Execute() == -1)
         return -1;
+    
     Print();
 }
 
@@ -231,7 +285,31 @@ Use()
 int
 Update()
 {
+    char table_name[50];
+    char new_value[50];
+    char where_clause[50];
+    int value_num;
 
+    strcpy(Query, "update ");
+
+    scanf("%s", table_name);
+    strcat(Query, table_name);
+    strcat(Query, " set ");
+
+    scanf("%d", &value_num);
+    while (value_num--) {
+        scanf("%s", new_value);
+        strcat(Query, new_value);
+        if (value_num != 0)
+            strcat(Query, ", ");
+    }
+    
+    strcat(Query, " where ");
+    scanf("%s", where_clause);
+    strcat(Query, where_clause);
+
+    if (Execute() == -1)
+        return -1;
 }
 
 int main(int argc, char *argv[])
