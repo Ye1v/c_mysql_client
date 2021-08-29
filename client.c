@@ -17,13 +17,14 @@ struct Account {
 };
 
 /* function declarations */
-static void CreateTable();
+static int  CreateTable();
 static int  Delate();
-static void DropTable();
+static int  DropTable();
+static int  Execute();
 static void Get_Command();
 static int  Insert();
 static void Login();
-static int  Print();
+static void Print();
 static int  Select();
 static int  Show();
 static int  Use();
@@ -38,9 +39,34 @@ static char Query[100];
 
 /* function implementations */
 int
-Create()
+CreateTable()
 {
+    char table_name[50];
+    char colume_name[50];
+    char colume_type[50];
+    int colume_num;
 
+    strcpy(Query, "create table ");
+
+    scanf("%s", table_name);
+    strcat(Query, table_name);
+    strcat(Query, " (");
+
+    scanf("%d", &colume_num);
+    while (colume_num--) {
+        scanf("%s", colume_name);
+        scanf("%s", colume_type);
+
+        strcat(Query, colume_name);
+        strcat(Query, " ");
+        strcat(Query, colume_type);
+        if (colume_num != 0)
+            strcat(Query, ", ");
+    }
+    strcat(Query, ")");
+    
+    if (Execute() == -1)
+        return -1;
 }
 
 int
@@ -50,11 +76,27 @@ Delate()
 }
 
 int
-Drop()
+DropTable()
 {
+    char table_name[50];
 
+    strcpy(Query, "drop table ");
+
+    scanf("%s", table_name);
+    strcat(Query, table_name);
+
+    if (Execute() == -1)
+        return -1;
 }
 
+int
+Execute()
+{
+    if (mysql_query(&Now_Sql, Query)) {
+          fprintf(stderr, "%s\n", mysql_error(&Now_Sql));
+          return -1;
+    }
+}
 void
 Get_Command()
 {
@@ -63,10 +105,13 @@ Get_Command()
         
         switch (command) {
             case Create_Menu:
-                Create();
+                CreateTable();
                 break;
             case Delate_Menu:
                 Delate();
+                break;
+            case Drop_Menu:
+                DropTable();
                 break;
             case Insert_Menu:
                 Insert();
@@ -123,13 +168,9 @@ Login()
     }
 }
 
-int
+void
 Print()
 {
-    if (mysql_query(&Now_Sql, Query)) {
-          fprintf(stderr, "%s\n", mysql_error(&Now_Sql));
-          return -1;
-    }
     Now_Res = mysql_use_result(&Now_Sql);
 
     while ((Now_Row = mysql_fetch_row(Now_Res)) != NULL) {
@@ -145,12 +186,14 @@ Print()
 int
 Select()
 {
-    char table[10];
+    char table_name[10];
 
     strcpy(Query, "select * from ");
-    scanf("%s", table);
-    strcat(Query,table);
+    scanf("%s", table_name);
+    strcat(Query,table_name);
     
+    if (Execute() == -1)
+        return -1;
     Print();
 }
 
@@ -160,6 +203,9 @@ Show()
     strcpy(Query, "show tables");
 
     printf("MySQL Tables in database %s:\n", Now_Sql.db);
+
+    if (Execute() == -1)
+        return -1;
     Print();
 }
 

@@ -26,13 +26,14 @@ Help_Menu()
 {
     printf("\nA C homework for mysql client\n");
     printf("List of client comands:\n");
-    printf("create                  Create tables\n");
+    printf("create <table_name> <colume_num> <colume_name> <colunme_type> ...\n");
+    printf("\t\t\tCreate tables\n");
     printf("delate                  Delate columns in a table\n");
-    printf("drop                    Drop tables\n");
+    printf("drop <table_name>       Drop tables\n");
     printf("help                    Print this help\n");
     printf("insert                  Insert columns\n");
     printf("quit                    Quit the client\n");
-    printf("select <table>          Select columns from a table\n");
+    printf("select <table_name>     Select columns from a table\n");
     printf("show                    Show tables in the database\n");
     printf("update                  Update columns in a table\n");
     printf("use <database>          Use another database\n\n");
