@@ -34,13 +34,13 @@ static MYSQL_RES *Now_Res;
 static MYSQL_ROW Now_Row;
 static MYSQL Now_Sql;
 static MYSQL_STMT *Now_Stmt;
-static char *Query;
+static char Query[100];
 
 /* function implementations */
 int
 Create()
 {
-    Query = "create table ? (? ?, ? ?)"; 
+
 }
 
 int
@@ -126,30 +126,32 @@ Login()
 int
 Select()
 {
-    char table[20];
-    MYSQL_BIND params[1];
-    Query = "select * from ?";
+    char table[10];
 
-    printf("input the Table: \n");
-    scanf("%s", &table);
+    strcpy(Query, "select * from ");
+    scanf("%s", table);
+    strcat(Query,table);
+    
+    if (mysql_query(&Now_Sql, Query)) {
+          fprintf(stderr, "%s\n", mysql_error(&Now_Sql));
+          return -1;
+    }
+    Now_Res = mysql_use_result(&Now_Sql);
 
-    memset(params, 0, sizeof(params));
-    params[0].buffer_type = MYSQL_TYPE_STRING; 
-    params[0].buffer = table;
-
-    if(mysql_stmt_prepare(Now_Stmt, Query, strlen(Query))) { 
-        fprintf(stderr, "mysql_stmt_prepare: %s\n", mysql_error(&Now_Sql)); 
-        return -1; 
+    while ((Now_Row = mysql_fetch_row(Now_Res)) != NULL) {
+        for (int i = 0; i < mysql_num_fields(Now_Res); i++) {
+            printf("%s\t", Now_Row[i]);
+        }
+        printf("\n");
     }
 
-    mysql_stmt_bind_result(Now_Stmt, params); 
-    mysql_stmt_execute(Now_Stmt);
+    mysql_free_result(Now_Res);
 }
 
 int
 Show()
 {
-    Query = "show tables";
+    strcpy(Query, "show tables");
 
     if (mysql_query(&Now_Sql, Query)) {
           fprintf(stderr, "%s\n", mysql_error(&Now_Sql));
@@ -162,6 +164,7 @@ Show()
 
     mysql_free_result(Now_Res);
 }
+
 int
 Use()
 {
@@ -191,12 +194,10 @@ Update()
 int main(int argc, char *argv[])
 {
     mysql_init(&Now_Sql);
-    Now_Stmt = mysql_stmt_init(&Now_Sql);
 
     Login();
     Display_Menu(Now_Sql.db, Now_Sql.user);
     Get_Command();
 
-    mysql_stmt_close(Now_Stmt);
     mysql_close(&Now_Sql);
 }
