@@ -30,16 +30,22 @@ Help_Menu()
     printf("\t\t\tCreate tables\n");
     printf("delate <table_name> <where_clause>\n");
     printf("\t\t\tDelate columns in a table\n");
-    printf("drop <table_name>       Drop tables\n");
-    printf("help                    Print this help\n");
+    printf("drop <table_name>\n");
+    printf("\t\t\tDrop tables\n");
+    printf("help\n");
+    printf("\t\t\tPrint this help\n");
     printf("insert <table_name> <colume_num> <colume_name1> ... <colume_value1> ...\n");
     printf("\t\t\tInsert columns\n");
-    printf("quit                    Quit the client\n");
-    printf("select <table_name>     Select columns from a table\n");
-    printf("show                    Show tables in the database\n");
+    printf("quit\n");
+    printf("\t\t\tQuit the client\n");
+    printf("select <table_name>\n");
+    printf("\t\t\tSelect columns from a table\n");
+    printf("show\n");
+    printf("\t\t\tShow tables in the database\n");
     printf("update <table_name> <value_num> <field1=new-value1> ... <where_clause>\n");
     printf("\t\t\tUpdate columns in a table\n");
-    printf("use <database>          Use another database\n\n");
+    printf("use <database>\n");
+    printf("\t\t\tUse another database\n\n");
 }
 
 int
