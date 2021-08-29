@@ -23,6 +23,7 @@ static void DropTable();
 static void Get_Command();
 static int  Insert();
 static void Login();
+static int  Print();
 static int  Select();
 static int  Show();
 static int  Use();
@@ -33,7 +34,6 @@ static Account Acc;
 static MYSQL_RES *Now_Res;
 static MYSQL_ROW Now_Row;
 static MYSQL Now_Sql;
-static MYSQL_STMT *Now_Stmt;
 static char Query[100];
 
 /* function implementations */
@@ -124,14 +124,8 @@ Login()
 }
 
 int
-Select()
+Print()
 {
-    char table[10];
-
-    strcpy(Query, "select * from ");
-    scanf("%s", table);
-    strcat(Query,table);
-    
     if (mysql_query(&Now_Sql, Query)) {
           fprintf(stderr, "%s\n", mysql_error(&Now_Sql));
           return -1;
@@ -149,20 +143,24 @@ Select()
 }
 
 int
+Select()
+{
+    char table[10];
+
+    strcpy(Query, "select * from ");
+    scanf("%s", table);
+    strcat(Query,table);
+    
+    Print();
+}
+
+int
 Show()
 {
     strcpy(Query, "show tables");
 
-    if (mysql_query(&Now_Sql, Query)) {
-          fprintf(stderr, "%s\n", mysql_error(&Now_Sql));
-          return -1;
-    }
-    Now_Res = mysql_use_result(&Now_Sql);
     printf("MySQL Tables in database %s:\n", Now_Sql.db);
-    while ((Now_Row = mysql_fetch_row(Now_Res)) != NULL)
-        printf("%s \n", Now_Row[0]);
-
-    mysql_free_result(Now_Res);
+    Print();
 }
 
 int
@@ -171,7 +169,6 @@ Use()
     mysql_close(&Now_Sql);
     mysql_init(&Now_Sql);
 
-    printf("please input your mysql database's name: \n");
     scanf("%s", Acc.dbname);
 
     if (mysql_real_connect(&Now_Sql, Acc.host, Acc.user, Acc.passwd, Acc.dbname, Acc.port, NULL, 0) == NULL) {
